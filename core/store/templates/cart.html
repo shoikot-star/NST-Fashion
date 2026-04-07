@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Your Cart | NST Fashion</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#fbf9f1",
+                        "primary": "#735c00",
+                        "on-surface": "#1b1c17",
+                    },
+                    fontFamily: {
+                        "headline": ["Playfair Display", "serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-surface text-on-surface font-body">
+    <nav class="fixed top-0 w-full z-50 bg-[#fbf9f1]/80 backdrop-blur-xl border-b border-black/5">
+        <div class="flex justify-between items-center px-12 py-6">
+            <div class="text-2xl font-headline tracking-[0.2em] uppercase text-[#2c2c2c]">
+                <a href="{% url 'home' %}">NST Fashion</a>
+            </div>
+            <a href="{% url 'home' %}"
+                class="text-xs uppercase tracking-widest hover:text-primary transition-colors">Continue Shopping</a>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 px-12 max-w-7xl mx-auto">
+        <h1 class="font-headline text-5xl mb-12 text-center">Your Atelier Cart</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+            <div class="lg:col-span-2 space-y-8">
+                {% for item in items %}
+                <div class="flex gap-6 border-b border-black/10 pb-8 items-center">
+                    <div class="w-32 h-40 bg-gray-100 overflow-hidden">
+                        {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" class="w-full h-full object-cover">
+                        {% endif %}
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-headline text-2xl mb-1">{{ item.product.name }}</h3>
+                        <p class="text-sm text-gray-500 mb-4 font-light italic">Artisanal Collection</p>
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs uppercase tracking-widest">Qty: {{ item.quantity }}</span>
+                            <span class="text-primary font-medium">৳{{ item.product.price }}</span>
+                        </div>
+                    </div>
+                    <a href="{% url 'remove_from_cart' item.id %}"
+                        class="material-symbols-outlined text-gray-400 hover:text-red-800 transition-colors">delete</a>
+                </div>
+                {% empty %}
+                <div class="text-center py-20">
+                    <p class="font-headline text-2xl italic text-gray-400 mb-6">Your cart is currently empty.</p>
+                    <a href="{% url 'home' %}"
+                        class="bg-[#2c2c2c] text-white px-8 py-4 rounded-sm uppercase text-xs tracking-widest hover:bg-primary transition-all">Start
+                        Exploring</a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="bg-white p-8 h-fit shadow-sm border border-black/5">
+                <h2 class="font-headline text-2xl mb-8 border-b pb-4">Summary</h2>
+                <div class="space-y-4 mb-8">
+                    <div class="flex justify-between text-sm uppercase tracking-widest text-gray-500">
+                        <span>Subtotal</span>
+                        <span>৳{{ cart.get_total_price }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm uppercase tracking-widest text-gray-500">
+                        <span>Shipping</span>
+                        <span class="italic font-light">Calculated at checkout</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-bold border-t border-black/10 pt-4">
+                        <span>Total</span>
+                        <span class="text-primary">৳{{ cart.get_total_price }}</span>
+                    </div>
+                </div>
+
+                <a href="{% url 'checkout' %}"
+                    class="w-full block text-center bg-[#2c2c2c] text-white py-5 uppercase text-xs tracking-widest hover:bg-primary transition-all shadow-lg active:scale-95">
+                    Proceed to Checkout
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

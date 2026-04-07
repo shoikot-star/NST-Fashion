@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        input {
+            width: 100%;
+            background: #fbf9f1;
+            border: 1px solid #eeeeee;
+            padding: 1rem;
+            font-size: 0.875rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #735c00;
+            background: white;
+        }
+    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | NST Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="bg-[#fbf9f1] font-['Inter'] flex items-center justify-center min-h-screen">
+    <div class="max-w-md w-full px-8 py-12 bg-white shadow-sm border border-black/5 text-center">
+        <h1 class="font-['Playfair_Display'] text-4xl mb-2 text-[#2c2c2c]">Welcome Back</h1>
+        <p class="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-8">NST Fashion Atelier</p>
+
+        <form method="POST" class="space-y-6 text-left">
+            {% csrf_token %}
+            {% for field in form %}
+            <div>
+                <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-2">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <p class="text-red-500 text-[10px] mt-1">{{ field.errors.as_text }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit"
+                class="w-full bg-[#2c2c2c] text-white py-5 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-[#735c00] transition-all mt-4">
+                Sign In
+            </button>
+        </form>
+
+        <p class="mt-8 text-[10px] text-gray-400 uppercase tracking-widest">
+            Don't have an account? <a href="{% url 'signup' %}" class="text-primary font-bold">Create One</a>
+        </p>
+    </div>
+</body>
+
+</html>
